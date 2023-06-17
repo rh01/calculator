@@ -11,5 +11,6 @@ pipeline {
         sh "./gradlew test"
       }
     }
+
   }
 }
