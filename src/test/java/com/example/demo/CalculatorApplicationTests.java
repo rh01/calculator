@@ -10,4 +10,10 @@ class CalculatorApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void testSum() {
+		Calculator calculator = new Calculator();
+		assert(calculator.sum(1, 1) == 2);
+	}
+
 }
