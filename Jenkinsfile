@@ -55,6 +55,7 @@ pipeline {
         //   sh "docker login -u ${USERNAME} -p ${PASSWORD}"
         // }
         // sh "docker tag spring-boot-docker:latest registry.cn-hangzhou.aliyuncs.com/xxx/spring-boot-docker:latest"
+        sh "echo $CI_HARBOR_TOKEN | docker login -u $CI_HARBOR_USER --password-stdin $CI_HARBOR_REGISTRY"
         sh "docker push harbor-registry.inner.youdao.com/infraop/spring-boot-docker"
       }
     }
