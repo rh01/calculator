@@ -19,6 +19,7 @@ repositories {
 
         maven {
             url 'http://nexus.corp.youdao.com/nexus/content/groups/public'
+			allowInsecureProtocol = true
         }
 
         maven {
