@@ -1,16 +1,21 @@
 pipeline {
-  agent any
+  agent {
+    label "k8s"
+  }
   stages {
+    // compile
     stage("Compile") {
       steps {
         sh "./gradlew compileJava"
       }
     }
+    // unit test
     stage("Unit test") {
       steps {
         sh "./gradlew test"
       }
     }
+    // code coverage
     stage("Code coverage") {
       steps {
         sh "./gradlew jacocoTestReport"
