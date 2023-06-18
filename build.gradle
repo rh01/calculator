@@ -1,28 +1,40 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.12'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id 'jacoco'
+    id 'java'
+    id 'org.springframework.boot' version '2.7.12'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'jacoco'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '11'
+    sourceCompatibility = '11'
 }
 
 repositories {
-	mavenCentral()
+    maven {
+            url 'https://nexus3.corp.youdao.com/repository/maven-public/'
+        }
+
+        maven {
+            url 'http://nexus.corp.youdao.com/nexus/content/groups/public'
+        }
+
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+
+        mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 jacocoTestCoverageVerification {
