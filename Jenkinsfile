@@ -24,6 +24,36 @@ pipeline {
         sh "./gradlew jacocoTestCoverageVerification"
       }
     }
+    // pakcage
+    stage("Package") {
+      steps {
+        sh "./gradlew bootJar"
+        // sh "./gradlew build"
+      }
+    }
+    // docker build
+    stage("Build docker image") {
+      steps {
+        sh "docker build -t harbor-registry.inner.youdao.com/infraop/spring-boot-docker ."
+      }
+    }
+    // docker push to registry
+    stage(
+      "Push docker image to registry"
+    ) {
+      steps {
+        // withCredentials([usernamePassword(
+        //   credentialsId: 'dockerhub',
+        //   usernameVariable: 'USERNAME',
+        //   passwordVariable: 'PASSWORD'
+        // )]) {
+        //   sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+        // }
+        // sh "docker tag spring-boot-docker:latest registry.cn-hangzhou.aliyuncs.com/xxx/spring-boot-docker:latest"
+        sh "docker push harbor-registry.inner.youdao.com/infraop/spring-boot-docker"
+      }
+    }
+
 
   }
 }
