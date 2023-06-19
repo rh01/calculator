@@ -47,19 +47,32 @@ pipeline {
       "Push docker image to registry"
     ) {
       steps {
-        // withCredentials([usernamePassword(
-        //   credentialsId: 'dockerhub',
-        //   usernameVariable: 'USERNAME',
-        //   passwordVariable: 'PASSWORD'
-        // )]) {
-        //   sh "docker login -u ${USERNAME} -p ${PASSWORD}"
-        // }
-        // sh "docker tag spring-boot-docker:latest registry.cn-hangzhou.aliyuncs.com/xxx/spring-boot-docker:latest"
         sh "echo $CI_HARBOR_TOKEN | docker login -u $CI_HARBOR_USER --password-stdin $CI_HARBOR_REGISTRY"
         sh "docker push harbor-registry.inner.youdao.com/infraop/spring-boot-docker"
       }
     }
 
+    // deploy to staging
+    stage("Deploy to staging") {
+      steps {
+        sh "docker run -d --rm -p 8765:8080 --name calculator harbor-registry.inner.youdao.com/infraop/spring-boot-docker"
+      }
+    }
 
+    // smoke test
+
+    stage("Acceptance test") {
+      steps {
+        sleep 60
+        sh "chmod +x acceptance_test.sh && ./acceptance_test.sh"
+      }
+    }
   }
+
+  post {
+    always {
+      sh "docker stop calculator"
+    }
+  }
+
 }
