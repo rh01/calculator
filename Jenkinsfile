@@ -2,6 +2,12 @@ pipeline {
   agent {
     label "k8s"
   }
+
+  // scm poll 
+  triggers {
+    pollSCM('* * * * *')
+  }
+
   stages {
     // compile
     stage("Compile") {
